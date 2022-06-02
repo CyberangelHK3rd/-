@@ -7,12 +7,6 @@ import com.example.demo.entity.Account.Retailer;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 
-/**
- * (Retailer)表数据库访问层
- *
- * @author makejava
- * @since 2022-05-12 09:34:05
- */
 public interface RetailerDao {
 
     /**
@@ -59,9 +53,6 @@ public interface RetailerDao {
 
     /**
      * 修改数据
-     *
-     * @param retailer 实例对象
-     * @return 影响行数
      */
     int update(Retailer retailer);
 

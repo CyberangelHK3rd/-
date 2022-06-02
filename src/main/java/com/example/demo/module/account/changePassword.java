@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 public class changePassword {
 
     @Size(min = 6, max = 20)
-    private String rPassword;
+    private String oldPassword;
     @Size(min = 6, max = 20)
     private String newPassword;
 }

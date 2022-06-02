@@ -20,7 +20,6 @@ public class RetailerServiceImpl implements RetailerService {
 
     /**
      * 注册账号
-     * TODO: 待完成 ：验证码
      */
     @Override
     public ServiceToControllerBody<Retailer> registerRetailer(Retailer retailer) {
@@ -39,7 +38,6 @@ public class RetailerServiceImpl implements RetailerService {
 
     /**
      * 删除账号
-     * TODO: 待完成 :验证码
      */
     @Override
     public ServiceToControllerBody<Retailer> deleteRetailer(Integer rId) {
@@ -81,13 +79,13 @@ public class RetailerServiceImpl implements RetailerService {
         if (retailer == null) {
             return body.error("rid", "该用户不存在", rId);
         }
-        if (retailer.getPassword().equals(changePassword.getRPassword())) {
+        if (retailer.getPassword().equals(changePassword.getOldPassword())) {
             if (retailerDao.changePassword(rId, changePassword.getNewPassword()) == 1) {
                 return body.success(retailer);
             }
             return body.error("rid", "修改失败", rId);
         }
-        return body.error("password", "密码错误", changePassword.getRPassword());
+        return body.error("password", "初始密码错误", changePassword.getOldPassword());
     }
 
     /**

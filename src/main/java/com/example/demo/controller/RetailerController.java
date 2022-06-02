@@ -45,7 +45,7 @@ public class RetailerController {
 
     /**
      * 登录账号
-     * TODO: 待完成 :验证码
+     * TODO: 传值错误
      */
     @PostMapping("login")
     public ResponseEntity<ResponseBody<Retailer>> loginAccount(@Valid @RequestBody Retailer retailer) {
@@ -54,7 +54,6 @@ public class RetailerController {
 
     /**
      * 修改密码
-     * TODO: 待完成 :验证码
      */
     @PutMapping("{rId}")
     public ResponseEntity<ResponseBody<Retailer>> changePassword(@Valid @PathVariable("rId") @NotNull Integer rId,
