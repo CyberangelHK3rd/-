@@ -1,5 +1,7 @@
 package com.example.demo.service.impl;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import com.example.demo.dao.RetailerDao;
@@ -27,6 +29,8 @@ public class RetailerServiceImpl implements RetailerService {
         if (retailer1 != null) {
             return body.error("phone", "该用户已存在", retailer.getPhone());
         }
+        Date date = new Date();
+        retailer.setTime(date).setStatus("1");
         if (retailerDao.registerRetailer(retailer) == 1) {
             return body.success(retailer);
         }
