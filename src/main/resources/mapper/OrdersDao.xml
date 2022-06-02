@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.OrdersDao">
+
+    <resultMap type="com.example.demo.entity.Orders" id="OrdersMap">
+        <result property="oId" column="O_id" jdbcType="INTEGER" />
+        <result property="oCid" column="O_cid" jdbcType="INTEGER" />
+        <result property="oCname" column="O_cname" jdbcType="VARCHAR" />
+        <result property="oWid" column="O_wid" jdbcType="INTEGER" />
+        <result property="oWname" column="O_wname" jdbcType="VARCHAR" />
+        <result property="oRid" column="O_rid" jdbcType="INTEGER" />
+        <result property="oRname" column="O_rname" jdbcType="VARCHAR" />
+        <result property="oNum" column="O_num" jdbcType="VARCHAR" />
+        <result property="oUnit" column="O_unit" jdbcType="VARCHAR" />
+        <result property="oAmount" column="O_amount" jdbcType="VARCHAR" />
+        <result property="oTime" column="O_time" jdbcType="TIMESTAMP" />
+        <result property="oState" column="O_state" jdbcType="INTEGER" />
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="OrdersMap">
+        select O_id,
+               O_cid,
+               O_cname,
+               O_wid,
+               O_wname,
+               O_rid,
+               O_rname,
+               O_num,
+               O_unit,
+               O_amount,
+               O_time,
+               O_state
+        from orders
+        where O_id = #{oId}
+</select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="OrdersMap">
+        select
+        O_id, O_cid, O_cname, O_wid, O_wname, O_rid, O_rname, O_num, O_unit, O_amount, O_time
+        from orders
+        <where>
+            <if test="oId != null">
+                and O_id = #{oId}
+</if>
+            <if test="oCid != null">
+                and O_cid = #{oCid}
+</if>
+            <if test="oCname != null and oCname != ''">
+                and O_cname = #{oCname}
+</if>
+            <if test="oWid != null">
+                and O_wid = #{oWid}
+</if>
+            <if test="oWname != null and oWname != ''">
+                and O_wname = #{oWname}
+</if>
+            <if test="oRid != null">
+                and O_rid = #{oRid}
+</if>
+            <if test="oRname != null and oRname != ''">
+                and O_rname = #{oRname}
+</if>
+            <if test="oNum != null and oNum != ''">
+                and O_num = #{oNum}
+</if>
+            <if test="oUnit != null and oUnit != ''">
+                and O_unit = #{oUnit}
+</if>
+            <if test="oAmount != null and oAmount != ''">
+                and O_amount = #{oAmount}
+</if>
+            <if test="oTime != null">
+                and O_time = #{oTime}
+</if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from orders
+        <where>
+            <if test="oId != null">
+                and O_id = #{oId}
+</if>
+            <if test="oCid != null">
+                and O_cid = #{oCid}
+</if>
+            <if test="oCname != null and oCname != ''">
+                and O_cname = #{oCname}
+</if>
+            <if test="oWid != null">
+                and O_wid = #{oWid}
+</if>
+            <if test="oWname != null and oWname != ''">
+                and O_wname = #{oWname}
+</if>
+            <if test="oRid != null">
+                and O_rid = #{oRid}
+</if>
+            <if test="oRname != null and oRname != ''">
+                and O_rname = #{oRname}
+</if>
+            <if test="oNum != null and oNum != ''">
+                and O_num = #{oNum}
+</if>
+            <if test="oUnit != null and oUnit != ''">
+                and O_unit = #{oUnit}
+</if>
+            <if test="oAmount != null and oAmount != ''">
+                and O_amount = #{oAmount}
+</if>
+            <if test="oTime != null">
+                and O_time = #{oTime}
+</if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="oId" useGeneratedKeys="true">
+        insert into orders(O_cid, O_cname, O_wid, O_wname, O_rid, O_rname, O_num, O_unit, O_amount, O_time, O_state)
+        values (#{oCid}, #{oCname}, #{oWid}, #{oWname}, #{oRid}, #{oRname}, #{oNum}, #{oUnit}, #{oAmount}, #{oTime}, #{oState})
+</insert>
+
+    <insert id="insertBatch" keyProperty="oId" useGeneratedKeys="true">
+        insert into orders(O_cid, O_cname, O_wid, O_wname, O_rid, O_rname, O_num, O_unit, O_amount, O_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.oCid}, #{entity.oCname}, #{entity.oWid}, #{entity.oWname}, #{entity.oRid}, #{entity.oRname},
+            #{entity.oNum}, #{entity.oUnit}, #{entity.oAmount}, #{entity.oTime})
+</foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="oId" useGeneratedKeys="true">
+        insert into orders(O_cid, O_cname, O_wid, O_wname, O_rid, O_rname, O_num, O_unit, O_amount, O_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.oCid}, #{entity.oCname}, #{entity.oWid}, #{entity.oWname}, #{entity.oRid}, #{entity.oRname},
+            #{entity.oNum}, #{entity.oUnit}, #{entity.oAmount}, #{entity.oTime})
+</foreach>
+        on duplicate key update
+        O_cid = values(O_cid),
+        O_cname = values(O_cname),
+        O_wid = values(O_wid),
+        O_wname = values(O_wname),
+        O_rid = values(O_rid),
+        O_rname = values(O_rname),
+        O_num = values(O_num),
+        O_unit = values(O_unit),
+        O_amount = values(O_amount),
+        O_time = values(O_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update orders
+        <set>
+            <if test="oCid != null">
+                O_cid = #{oCid},
+</if>
+            <if test="oCname != null and oCname != ''">
+                O_cname = #{oCname},
+</if>
+            <if test="oWid != null">
+                O_wid = #{oWid},
+</if>
+            <if test="oWname != null and oWname != ''">
+                O_wname = #{oWname},
+</if>
+            <if test="oRid != null">
+                O_rid = #{oRid},
+</if>
+            <if test="oRname != null and oRname != ''">
+                O_rname = #{oRname},
+</if>
+            <if test="oNum != null and oNum != ''">
+                O_num = #{oNum},
+</if>
+            <if test="oUnit != null and oUnit != ''">
+                O_unit = #{oUnit},
+</if>
+            <if test="oAmount != null and oAmount != ''">
+                O_amount = #{oAmount},
+</if>
+            <if test="oTime != null">
+                O_time = #{oTime},
+</if>
+            <if test="oState != null">
+                O_state = #{oState},
+</if>
+        </set>
+        where O_id = #{oId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from orders
+        where O_id = #{oId}
+</delete>
+
+    <!-- 通过rId查询数据 -->
+    <select id="selectByRId" resultType="com.example.demo.entity.Orders">
+        select *
+        from orders
+        <where>
+            <if test="oRid != null">
+                and O_rid = #{oRid}
+</if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.CommityDao">
+
+    <resultMap type="com.example.demo.entity.Commity" id="CommityMap">
+        <result property="cId" column="C_id" jdbcType="INTEGER" />
+        <result property="cName" column="C_name" jdbcType="VARCHAR" />
+        <result property="cKinds" column="C_kinds" jdbcType="VARCHAR" />
+        <result property="cType" column="C_type" jdbcType="VARCHAR" />
+        <result property="cOrigin" column="C_origin" jdbcType="VARCHAR" />
+        <result property="cWid" column="C_wid" jdbcType="INTEGER" />
+        <result property="cNumber" column="C_number" jdbcType="VARCHAR" />
+        <result property="cNunit" column="C_nunit" jdbcType="VARCHAR" />
+        <result property="cPrice" column="C_price" jdbcType="VARCHAR" />
+        <result property="cPunit" column="C_punit" jdbcType="VARCHAR" />
+        <result property="cTime" column="C_time" jdbcType="TIMESTAMP" />
+        <result property="cStatus" column="C_status" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CommityMap">
+        select C_id,
+               C_name,
+               C_kinds,
+               C_type,
+               C_origin,
+               C_wid,
+               C_number,
+               C_nunit,
+               C_price,
+               C_punit,
+               C_time,
+               C_status
+        from commity
+        where C_id = #{cId}
+</select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CommityMap">
+        select
+        C_id, C_name, C_kinds, C_type, C_origin, C_wid, C_number, C_nunit, C_price, C_punit, C_time, C_status
+        from commity
+        <where>
+            <if test="cId != null">
+                and C_id = #{cId}
+</if>
+            <if test="cName != null and cName != ''">
+                and C_name = #{cName}
+</if>
+            <if test="cKinds != null and cKinds != ''">
+                and C_kinds = #{cKinds}
+</if>
+            <if test="cType != null and cType != ''">
+                and C_type = #{cType}
+</if>
+            <if test="cOrigin != null and cOrigin != ''">
+                and C_origin = #{cOrigin}
+</if>
+            <if test="cWid != null">
+                and C_wid = #{cWid}
+</if>
+            <if test="cNumber != null and cNumber != ''">
+                and C_number = #{cNumber}
+</if>
+            <if test="cNunit != null and cNunit != ''">
+                and C_nunit = #{cNunit}
+</if>
+            <if test="cPrice != null and cPrice != ''">
+                and C_price = #{cPrice}
+</if>
+            <if test="cPunit != null and cPunit != ''">
+                and C_punit = #{cPunit}
+</if>
+            <if test="cTime != null">
+                and C_time = #{cTime}
+</if>
+            <if test="cStatus != null and cStatus != ''">
+                and C_status = #{cStatus}
+</if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from commity
+        <where>
+            <if test="cId != null">
+                and C_id = #{cId}
+</if>
+            <if test="cName != null and cName != ''">
+                and C_name = #{cName}
+</if>
+            <if test="cKinds != null and cKinds != ''">
+                and C_kinds = #{cKinds}
+</if>
+            <if test="cType != null and cType != ''">
+                and C_type = #{cType}
+</if>
+            <if test="cOrigin != null and cOrigin != ''">
+                and C_origin = #{cOrigin}
+</if>
+            <if test="cWid != null">
+                and C_wid = #{cWid}
+</if>
+            <if test="cNumber != null and cNumber != ''">
+                and C_number = #{cNumber}
+</if>
+            <if test="cNunit != null and cNunit != ''">
+                and C_nunit = #{cNunit}
+</if>
+            <if test="cPrice != null and cPrice != ''">
+                and C_price = #{cPrice}
+</if>
+            <if test="cPunit != null and cPunit != ''">
+                and C_punit = #{cPunit}
+</if>
+            <if test="cTime != null">
+                and C_time = #{cTime}
+</if>
+            <if test="cStatus != null and cStatus != ''">
+                and C_status = #{cStatus}
+</if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="cId" useGeneratedKeys="true">
+        insert into commity(C_name, C_kinds, C_type, C_origin, C_wid, C_number, C_nunit, C_price, C_punit, C_time,
+                            C_status)
+        values (#{cName}, #{cKinds}, #{cType}, #{cOrigin}, #{cWid}, #{cNumber}, #{cNunit}, #{cPrice}, #{cPunit},
+                #{cTime}, #{cStatus})
+</insert>
+
+    <insert id="insertBatch" keyProperty="cId" useGeneratedKeys="true">
+        insert into commity(C_name, C_kinds, C_type, C_origin, C_wid, C_number, C_nunit, C_price, C_punit, C_time,
+        C_status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.cName}, #{entity.cKinds}, #{entity.cType}, #{entity.cOrigin}, #{entity.cWid}, #{entity.cNumber},
+            #{entity.cNunit}, #{entity.cPrice}, #{entity.cPunit}, #{entity.cTime}, #{entity.cStatus})
+</foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="cId" useGeneratedKeys="true">
+        insert into commity(C_name, C_kinds, C_type, C_origin, C_wid, C_number, C_nunit, C_price, C_punit, C_time,
+        C_status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.cName}, #{entity.cKinds}, #{entity.cType}, #{entity.cOrigin}, #{entity.cWid}, #{entity.cNumber},
+            #{entity.cNunit}, #{entity.cPrice}, #{entity.cPunit}, #{entity.cTime}, #{entity.cStatus})
+</foreach>
+        on duplicate key update
+        C_name = values(C_name),
+        C_kinds = values(C_kinds),
+        C_type = values(C_type),
+        C_origin = values(C_origin),
+        C_wid = values(C_wid),
+        C_number = values(C_number),
+        C_nunit = values(C_nunit),
+        C_price = values(C_price),
+        C_punit = values(C_punit),
+        C_time = values(C_time),
+        C_status = values(C_status)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update" keyProperty="cId" useGeneratedKeys="true">
+        update commity
+        <set>
+            <if test="cName != null and cName != ''">
+                C_name = #{cName},
+</if>
+            <if test="cKinds != null and cKinds != ''">
+                C_kinds = #{cKinds},
+</if>
+            <if test="cType != null and cType != ''">
+                C_type = #{cType},
+</if>
+            <if test="cOrigin != null and cOrigin != ''">
+                C_origin = #{cOrigin},
+</if>
+            <if test="cWid != null">
+                C_wid = #{cWid},
+</if>
+            <if test="cNumber != null and cNumber != ''">
+                C_number = #{cNumber},
+</if>
+            <if test="cNunit != null and cNunit != ''">
+                C_nunit = #{cNunit},
+</if>
+            <if test="cPrice != null and cPrice != ''">
+                C_price = #{cPrice},
+</if>
+            <if test="cPunit != null and cPunit != ''">
+                C_punit = #{cPunit},
+</if>
+            <if test="cTime != null">
+                C_time = #{cTime},
+</if>
+            <if test="cStatus != null and cStatus != ''">
+                C_status = #{cStatus},
+</if>
+        </set>
+        where C_id = #{cId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from commity
+        where C_id = #{cId}
+</delete>
+
+    <!-- 根据cName查找数据 -->
+    <select id="queryByName" resultType="com.example.demo.entity.Commity">
+        select
+        C_id,
+        C_name,
+        C_kinds,
+        C_type,
+        C_origin,
+        C_wid,
+        C_number,
+        C_nunit,
+        C_price,
+        C_punit,
+        C_time,
+        C_status
+        from commity
+        where C_name = #{cName}
+</select>
+
+    <!-- 根据cName模糊查找数据 -->
+    <select id="selectByNameLike" resultType="com.example.demo.entity.Commity">
+        select
+        C_id,
+        C_name,
+        C_kinds,
+        C_type,
+        C_origin,
+        C_wid,
+        C_number,
+        C_nunit,
+        C_price,
+        C_punit,
+        C_time,
+        C_status
+        from commity
+        where C_name like concat('%',#{cName},'%')
+</select>
+
+    <!-- 根据cWid和cId删除数据 -->
+    <delete id="deleteByWidAndId">
+        delete
+        from commity
+        where C_wid = #{cWid} and C_id = #{cId}
+</delete>
+
+    <!-- 根据wid查询商品 -->
+    <select id="selectByWid" resultType="com.example.demo.entity.Commity">
+        select
+        C_id,
+        C_name,
+        C_kinds,
+        C_type,
+        C_origin,
+        C_wid,
+        C_number,
+        C_nunit,
+        C_price,
+        C_punit,
+        C_time,
+        C_status
+        from commity
+        where C_wid = #{cWid}
+</select>
+
+    <!-- 根据商品大类型查询该类型所有商品 -->
+    <select id="queryByType" resultType="com.example.demo.entity.Commity">
+        select
+        C_id,
+        C_name,
+        C_kinds,
+        C_type,
+        C_origin,
+        C_wid,
+        C_number,
+        C_nunit,
+        C_price,
+        C_punit,
+        C_time,
+        C_status
+        from commity
+        where C_kinds = #{cKinds}
+</select>
+
+    <!-- 查询所有商品,返回所有信息 -->
+    <select id="queryAll" resultType="com.example.demo.entity.Commity">
+            select
+            C_id,
+            C_name,
+            C_kinds,
+            C_type,
+            C_origin,
+            C_wid,
+            C_number,
+            C_nunit,
+            C_price,
+            C_punit,
+            C_time,
+            C_status
+            from commity
+</select>
+</mapper>
