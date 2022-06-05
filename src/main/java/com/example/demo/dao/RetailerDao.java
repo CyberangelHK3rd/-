@@ -2,10 +2,10 @@ package com.example.demo.dao;
 
 import java.util.List;
 
-import com.example.demo.entity.Account.Retailer;
-
 import org.apache.ibatis.annotations.Param;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+
+import com.example.demo.entity.Account.Retailer;
 
 public interface RetailerDao {
 
@@ -77,6 +77,6 @@ public interface RetailerDao {
     /**
      * 修改密码
      */
-    int changePassword(Integer rId, String newPassword);
+    int changePassword(@Param("rId") Integer rId, @Param("newPassword") String newPassword);
 
 }

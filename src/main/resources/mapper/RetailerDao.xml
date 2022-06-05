@@ -28,13 +28,6 @@
         where R_id = #{rId}
 </select>
 
-    <!-- 修改密码 -->
-    <update id="updatePassword" parameterType="com.example.demo.entity.Account.Retailer">
-        update retailer
-        set R_password = #{password}
-        where R_id = #{rId}
-</update>
-
     <!-- 根据手机号查询 -->
     <select id="queryByPhone" resultMap="RetailerMap">
         select R_id,
@@ -166,5 +159,12 @@
         from retailer
         where R_id = #{rId}
 </delete>
+
+    <!-- 修改密码 -->
+    <update id="changePassword">
+        update retailer
+        set R_password = #{newPassword}
+        where R_id = #{rId}
+</update>
 
 </mapper>

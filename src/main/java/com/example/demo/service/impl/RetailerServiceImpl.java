@@ -4,14 +4,14 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Service;
+
 import com.example.demo.dao.RetailerDao;
 import com.example.demo.entity.Account.Retailer;
 import com.example.demo.entity.util.ServiceToControllerBody;
 import com.example.demo.module.account.ForgetPassword;
 import com.example.demo.module.account.changePassword;
 import com.example.demo.service.RetailerService;
-
-import org.springframework.stereotype.Service;
 
 @Service("retailerService")
 public class RetailerServiceImpl implements RetailerService {
@@ -81,7 +81,8 @@ public class RetailerServiceImpl implements RetailerService {
         }
         if (retailer.getPassword().equals(changePassword.getOldPassword())) {
             if (retailerDao.changePassword(rId, changePassword.getNewPassword()) == 1) {
-                return body.success(retailer);
+                Retailer retailer1 = retailerDao.queryById(rId);
+                return body.success(retailer1);
             }
             return body.error("rid", "修改失败", rId);
         }
