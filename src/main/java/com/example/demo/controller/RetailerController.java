@@ -4,12 +4,6 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import com.example.demo.entity.Account.Retailer;
-import com.example.demo.entity.util.ResponseBody;
-import com.example.demo.module.account.ForgetPassword;
-import com.example.demo.module.account.changePassword;
-import com.example.demo.service.RetailerService;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +12,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.entity.Account.Retailer;
+import com.example.demo.entity.util.ResponseBody;
+import com.example.demo.module.account.ForgetPassword;
+import com.example.demo.module.account.changePassword;
+import com.example.demo.service.RetailerService;
 
 @RestController
 @RequestMapping("retailer")
@@ -47,6 +47,7 @@ public class RetailerController {
      * 登录账号
      * TODO: 传值错误
      */
+    // @CrossOrigin
     @PostMapping("login")
     public ResponseEntity<ResponseBody<Retailer>> loginAccount(@Valid @RequestBody Retailer retailer) {
         return ResponseBody.handle(retailerService.loginRetailer(retailer));
